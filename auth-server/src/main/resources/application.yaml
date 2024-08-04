@@ -1,0 +1,15 @@
+server.port: 8099
+spring:
+  security.oauth2.authorizationserver.client:
+    tunganh-client:
+      require-authorization-consent: false #disable need to consent to authorization after login
+      registration: #define new RegisteredClient
+        client-authentication-methods: 'client_secret_basic' #client can authorize itself with basic authen
+        client-id: auth-client
+        client-secret: '{bcrypt}$2a$10$jdJGhzsiIqYFpjJiYWMl/eKDOd8vdyQis2aynmFN0dgJ53XvpzzwC'
+        redirect-uris:
+          - 'http://127.0.0.1:8080/login/oauth2/code/spring' #where to redirect after successfully authenticating user.
+        authorization-grant-types: 'authorization_code' #tells auth-client to needs to redirect user to authorization to authenticate, then authorization server redirects back to auth-client with authorization code.
+        scopes: 'user.read,user.write,openid' #limit scope of user information client requests from auth-server.
+server.forward-headers-strategy: framework #correct header when deploying behind reverse proxy that handles domain name.
+
